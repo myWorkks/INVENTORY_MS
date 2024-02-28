@@ -1,8 +1,7 @@
 package com.bharath.inventory.model;
 
 import java.time.LocalDateTime;
-
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import com.bharath.inventory.entity.Unit;
 
@@ -10,8 +9,9 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class AddProductDTO {
+public class ViewProductResponse {
 	
+	private Long productId;
 	private String productName;
 	private String productDescription;
 	private String SKU;
@@ -36,9 +36,12 @@ public class AddProductDTO {
 	
 	private Unit unit;
 
+	private LocalDateTime addedAt;
+	private LocalDateTime modifiedAt;
+
 	private Long addedByUserId;
 
-	private MultipartFile[] productImages;
 	
+	private List<String> imagePaths;
 
 }

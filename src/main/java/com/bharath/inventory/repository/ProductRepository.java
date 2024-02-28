@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.bharath.inventory.entity.ProductDetails;
 
 public interface ProductRepository extends JpaRepository<ProductDetails, Long> {
-
+ProductDetails findBySKU(String SKU);
 }
