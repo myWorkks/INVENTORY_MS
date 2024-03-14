@@ -5,5 +5,6 @@ public class InventoryExceptionMessages {
 	public static final String PRODUCT_NOT_FOUND = "NO PRODUCT FOUND WITH PROVIDED PRODUCT ID";
 	public static final String PRODUCTS_NOT_FOUND = "NO PRODUCTS AVAILABLE";
 	public static final String PRODUCT_ALREADY_ADDED ="PRODUCT WITH SAME SKU ALREADY ADDED";
+	public static final String SEARCH_PRODUCTS_NOT_FOUND = "SEARCH RESULTS IS EMPTY";
 
 }

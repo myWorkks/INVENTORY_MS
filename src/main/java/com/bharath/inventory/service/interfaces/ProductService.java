@@ -7,9 +7,10 @@ import com.bharath.inventory.model.AddProductDTO;
 import com.bharath.inventory.model.ViewProductResponse;
 
 public interface ProductService {
-public void addProduct(AddProductDTO productDTO) throws InventoryServiceException;
+public void addProduct(AddProductDTO productDTO,Long userId) throws InventoryServiceException;
 
 public ViewProductResponse viewProduct(Long pid) throws InventoryServiceException;
 
 public List<ViewProductResponse> viewAllProducts() throws InventoryServiceException;
+public List<ViewProductResponse>searchProducts(String searchKeyword) throws InventoryServiceException;
 }

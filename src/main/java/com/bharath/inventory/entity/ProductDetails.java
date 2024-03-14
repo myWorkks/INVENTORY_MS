@@ -15,6 +15,7 @@ import lombok.Setter;
 
 @Entity
 @Table
+//@Document(indexName = "product_details")
 @Getter
 @Setter
 public class ProductDetails {
@@ -22,6 +23,7 @@ public class ProductDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long productId;
+	//private String productId;
 	private String productName;
 	private String productDescription;
 	private String SKU;

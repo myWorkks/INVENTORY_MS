@@ -1,7 +1,5 @@
 package com.bharath.inventory.model;
 
-import java.time.LocalDateTime;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bharath.inventory.entity.Unit;
@@ -17,7 +15,6 @@ public class AddProductDTO {
 	private String SKU;
 
 	private String category;
-
 	private String subCategory;
 
 	private String brand;
@@ -36,7 +33,7 @@ public class AddProductDTO {
 	
 	private Unit unit;
 
-	private Long addedByUserId;
+	
 
 	private MultipartFile[] productImages;
 	

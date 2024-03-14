@@ -1,6 +1,5 @@
 package com.bharath.inventory.service.classes;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +28,19 @@ public class ProductServiceImpl implements ProductService {
 	private AssetManagementService assetManagementService;
 
 	@Override
-	public void addProduct(AddProductDTO productDTO) throws InventoryServiceException {
-	
-		ProductDetails product = productRepository.findBySKU(productDTO.getSKU());
+	public void addProduct(AddProductDTO productDTO, Long userId) throws InventoryServiceException {
+		List<ProductDetails> addedProductsByUser = productRepository.findByAddedByUserId(userId);
 
-		
-		if (product != null)
-			throw new InventoryServiceException(InventoryExceptionMessages.PRODUCT_ALREADY_ADDED);
-		assetManagementService.uploadImages(productDTO.getProductImages());
-		productRepository.save(convertFromAddProductRequestToEntity(productDTO));
+		if (!addedProductsByUser.isEmpty()) {
+			Optional<ProductDetails> optional = addedProductsByUser.stream()
+					.filter(product -> product.getSKU().equals(productDTO.getSKU())).findAny();
+
+			if (optional.isPresent())
+				throw new InventoryServiceException(InventoryExceptionMessages.PRODUCT_ALREADY_ADDED);
+		}
+		if (productDTO.getProductImages() != null)
+			assetManagementService.uploadImages(productDTO.getProductImages());
+		productRepository.save(convertFromAddProductRequestToEntity(productDTO, userId));
 	}
 
 	@Override
@@ -72,16 +75,18 @@ public class ProductServiceImpl implements ProductService {
 		viewProduct.setUnit(product.getUnit());
 		viewProduct.setModifiedAt(product.getModifiedAt());
 		viewProduct.setAddedByUserId(product.getAddedByUserId());
-		List<String > imagePaths=new ArrayList<String>();
-	for(String path:	product.getImagePaths().split(",")) {
-		if(!path.trim().isEmpty())
-			imagePaths.add(path);
-	}
+	if(product.getImagePaths()!=null) {
+		List<String> imagePaths = new ArrayList<String>();
+		for (String path : product.getImagePaths().split(",")) {
+			if (!path.trim().isEmpty())
+				imagePaths.add(path);
+		}
 		viewProduct.setImagePaths(imagePaths);
+	}
 		return viewProduct;
 	}
 
-	private ProductDetails convertFromAddProductRequestToEntity(AddProductDTO product) {
+	private ProductDetails convertFromAddProductRequestToEntity(AddProductDTO product, Long userId) {
 		ProductDetails viewProduct = new ProductDetails();
 		viewProduct.setAddedAt(LocalDateTime.now());
 		viewProduct.setProductName(product.getProductName());
@@ -102,19 +107,20 @@ public class ProductServiceImpl implements ProductService {
 		viewProduct.setRecorderPoint(product.getRecorderPoint());
 		viewProduct.setUnit(product.getUnit());
 		viewProduct.setModifiedAt(LocalDateTime.now());
-		viewProduct.setAddedByUserId(product.getAddedByUserId());
+		viewProduct.setAddedByUserId(userId);
 		MultipartFile[] images = product.getProductImages();
-		//https://bharathse-commerce.s3.ap-south-1.amazonaws.com/ProductImages/ironman.jpeg
-		
-		//https://bharathse-commerce.s3.ap-south-1.amazonaws.com/ProductImages/smiley.jpeg
-		final 
-		String basePath = InventoryServiceConstants.S3_BUCKET_PRODUCT_PATH;
-		
-		StringBuilder imagePath = new StringBuilder();
-		for (MultipartFile file : images) {
-			imagePath.append(basePath).append(file.getOriginalFilename()).append(",");
+		if (images != null) {
+			// https://bharathse-commerce.s3.ap-south-1.amazonaws.com/ProductImages/ironman.jpeg
+
+			// https://bharathse-commerce.s3.ap-south-1.amazonaws.com/ProductImages/smiley.jpeg
+			final String basePath = InventoryServiceConstants.S3_BUCKET_PRODUCT_PATH;
+
+			StringBuilder imagePath = new StringBuilder();
+			for (MultipartFile file : images) {
+				imagePath.append(basePath).append(file.getOriginalFilename()).append(",");
+			}
+			viewProduct.setImagePaths(imagePath.toString());
 		}
-		viewProduct.setImagePaths(imagePath.toString());
 		return viewProduct;
 	}
 
@@ -125,6 +131,14 @@ public class ProductServiceImpl implements ProductService {
 			throw new InventoryServiceException(InventoryExceptionMessages.PRODUCTS_NOT_FOUND);
 		return products.stream().map(p -> convertFromProductEntityToViewResponse(p)).toList();
 
+	}
+
+	@Override
+	public List<ViewProductResponse> searchProducts(String searchKeyword) throws InventoryServiceException {
+		List<ProductDetails> products = productRepository.findBySearchKeyword(searchKeyword);
+		if (products.isEmpty())
+			throw new InventoryServiceException(InventoryExceptionMessages.SEARCH_PRODUCTS_NOT_FOUND);
+		return products.stream().map(p -> convertFromProductEntityToViewResponse(p)).toList();
 	}
 
 }
