@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<ProductDetails, Long> {
 	List<ProductDetails> findBySearchKeyword(
 			String searchKeyword);
 
+	List<ProductDetails> findByAddedByUserIdAndProductIdIn(Long userId, List<Long> productIds);
+
 }

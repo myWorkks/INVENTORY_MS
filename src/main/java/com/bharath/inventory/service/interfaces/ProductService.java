@@ -13,4 +13,10 @@ public ViewProductResponse viewProduct(Long pid) throws InventoryServiceExceptio
 
 public List<ViewProductResponse> viewAllProducts() throws InventoryServiceException;
 public List<ViewProductResponse>searchProducts(String searchKeyword) throws InventoryServiceException;
+
+public String deleteInventory(Long userId) throws InventoryServiceException;
+
+public String deleteProducts(Long userId, List<Long> productIds) throws InventoryServiceException;
+
+public List<ViewProductResponse> viewAllProducts(Long userId,List<Long> productIds) throws InventoryServiceException;
 }

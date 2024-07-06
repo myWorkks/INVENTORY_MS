@@ -1,5 +1,7 @@
 package com.bharath.inventory.controller.ms;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
@@ -29,7 +31,7 @@ public class AssetManagementServiceImpl implements AssetManagementService {
 	private WebClient.Builder webclient;
 
 	@Override
-	public String uploadImages(MultipartFile[] images) {
+	public String uploadImages(List<MultipartFile> images) {
 
 		MultiValueMap<String, Object> formData = new LinkedMultiValueMap<String, Object>();
 

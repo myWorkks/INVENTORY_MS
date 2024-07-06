@@ -1,14 +1,19 @@
 package com.bharath.inventory.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +28,7 @@ public class ProductDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long productId;
-	//private String productId;
+	// private String productId;
 	private String productName;
 	private String productDescription;
 	private String SKU;
@@ -50,10 +55,12 @@ public class ProductDetails {
 
 	private LocalDateTime addedAt;
 	private LocalDateTime modifiedAt;
-
 	private Long addedByUserId;
 
 	@Lob
 	private String imagePaths;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "product_id", updatable = false,nullable=false)
+	private List<Asset> assetInfo;
 
 }

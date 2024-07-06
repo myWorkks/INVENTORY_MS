@@ -7,10 +7,11 @@ import com.bharath.inventory.entity.Unit;
 
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 public class ViewProductResponse {
-	
+
 	private Long productId;
 	private String productName;
 	private String productDescription;
@@ -33,7 +34,7 @@ public class ViewProductResponse {
 	private Integer minStockLevel;
 	private Integer maxStockLevel;
 	private Integer recorderPoint;
-	
+
 	private Unit unit;
 
 	private LocalDateTime addedAt;
@@ -41,7 +42,6 @@ public class ViewProductResponse {
 
 	private Long addedByUserId;
 
-	
-	private List<String> imagePaths;
+	private List<AssetViewResponse> files;
 
 }

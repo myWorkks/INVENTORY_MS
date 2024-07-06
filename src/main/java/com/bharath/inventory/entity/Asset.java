@@ -1,11 +1,12 @@
 package com.bharath.inventory.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,15 @@ import lombok.Setter;
 @Table
 @Getter
 @Setter
-public class Category {
+public class Asset {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long categoryId;
-private String categoryName;
-@ManyToOne
-@JoinColumn(name="subcategory_id")
-private Category subCategory;
+	private Long assetId;
+	private boolean isImage;
+	private boolean isPrimary;
+	private boolean isVideo;
+	private LocalDateTime addedAt;
+	private LocalDateTime updatedAt;
+	private Long addedBy;
+	private String filePath;
 }

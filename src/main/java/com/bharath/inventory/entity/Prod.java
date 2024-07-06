@@ -1,25 +1,23 @@
 package com.bharath.inventory.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table
 @Getter
 @Setter
-public class Category {
+public class Prod {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long categoryId;
-private String categoryName;
-@ManyToOne
-@JoinColumn(name="subcategory_id")
-private Category subCategory;
+	private Long pid;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private Category category;
 }

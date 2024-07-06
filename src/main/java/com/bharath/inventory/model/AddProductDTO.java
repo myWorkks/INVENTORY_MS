@@ -1,15 +1,18 @@
 package com.bharath.inventory.model;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bharath.inventory.entity.Unit;
 
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 public class AddProductDTO {
-	
+
 	private String productName;
 	private String productDescription;
 	private String SKU;
@@ -30,12 +33,9 @@ public class AddProductDTO {
 	private Integer minStockLevel;
 	private Integer maxStockLevel;
 	private Integer recorderPoint;
-	
+
 	private Unit unit;
 
-	
-
-	private MultipartFile[] productImages;
-	
+	private List<AssetDTO> assetInfo;
 
 }
